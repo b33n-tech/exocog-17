@@ -141,7 +141,28 @@ restoreInput.addEventListener("change", event=>{
 
 // --- Build Prompt ---
 function buildPrompt(tasks){
-  let combined = "Tu es un assistant de gestion de projet. Voici une liste de tâches et commentaires. Analyse et crée un plan structuré JSON :\n\n";
+  let combined = "Tu es un assistant de gestion de projet. Je vais te donner un texte contenant des tâches, des notes et des informations diverses, souvent incomplètes, peu structurées ou dispersées. Ta mission est de :
+
+1. Identifier toutes les tâches explicites et implicites.
+2. Extraire les micro-actions et micro-micro-actions nécessaires pour chaque tâche.
+3. Identifier les dépendances entre tâches et actions.
+4. Extraire les messages à envoyer, les livrables, les réunions et autres modules pertinents.
+5. Préserver les commentaires ou notes associées aux tâches.
+6. Générer un JSON structuré strictement sous ce format :
+
+{
+  "jalons": [{"titre":"","datePrévue":"","sousActions":[{"texte":"","statut":""}]}],
+  "messages": [{"destinataire":"","sujet":"","texte":"","envoyé":false}],
+  "rdv": [{"titre":"","date":"","durée":"","participants":[""]}],
+  "autresModules": [{"titre":"","items":[{"nom":"","lien":""}]}],
+  "livrables": [{"titre":"","type":"","template":{}}]
+}
+
+- Tout ce qui n’est pas explicitement précisé mais logiquement nécessaire doit être inféré.
+- Les actions non datées peuvent recevoir une date par défaut aujourd’hui.
+- La structure JSON doit être strictement respectée et parsable.
+
+Voici le texte à traiter :\n\n";
   tasks.forEach(t=>{
     combined += "- "+t.text+"\n";
     if(t.comments?.length){
